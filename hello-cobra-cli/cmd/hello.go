@@ -22,7 +22,11 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
+	"log"
+	"net/http"
 
 	"github.com/spf13/cobra"
 )
@@ -38,7 +42,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("hello called")
+		getEmoji()
 	},
 }
 
@@ -54,4 +58,33 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// helloCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+type Emojis struct {
+	Wave string `json:"wave"`
+}
+
+func getEmoji() {
+	emoji := Emojis{}
+	url := "https://api.github.com/emojis"
+	responseBody := getResponseBody(url)
+
+	if err := json.Unmarshal(responseBody, &emoji); err != nil {
+		fmt.Printf("Could not unmarshal responseBody. %v", err)
+	}
+	fmt.Println(string(emoji.Wave))
+}
+
+func getResponseBody(url string) []byte {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Printf("Could not read response body. %v", err)
+	}
+	return body
 }
