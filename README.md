@@ -3,5 +3,5 @@ A repository for my exploration of a go language
 
 ## Table of Contents
 
-[Hello Cobra CLI](hello-cobra-cli/README.md)
-[Hello Survey](hello-survey/README.md)
+[Hello Cobra CLI](hello-cobra-cli/README.md) </br>
+[Hello Survey](hello-survey/README.md) </br>
