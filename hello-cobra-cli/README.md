@@ -11,13 +11,13 @@ Cobra v1.1+ for initializing commands </br>
 
 ## Tutorial
 
-Start cobra project
+To start cobra project from scratch
 
 ```bash
 cobra init --config .cobra.yaml --pkg-name github.com/anitabee/exploring-go/hello-cobra-cli
 ```
 
-Add one command
+To add new command
 
 ```bash
 cobra add hello --config .cobra.yaml
