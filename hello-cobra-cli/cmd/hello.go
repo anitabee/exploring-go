@@ -64,19 +64,33 @@ type Emojis struct {
 	Wave string `json:"wave"`
 }
 
-func getEmoji() {
-	emoji := Emojis{}
-	url := "https://api.github.com/emojis"
-	responseBody := getResponseBody(url)
+type Methods interface {
+	Get(url string) (resp *http.Response, err error)
+}
 
-	if err := json.Unmarshal(responseBody, &emoji); err != nil {
-		fmt.Printf("Could not unmarshal responseBody. %v", err)
+type Client struct {
+	HTTPClient Methods
+}
+
+func (c *Client) Get(url string) (resp *http.Response, err error) {
+
+	httpClient := c.HTTPClient
+	if httpClient == nil {
+		httpClient = http.DefaultClient
 	}
-	fmt.Println(string(emoji.Wave))
+
+	resp, err = httpClient.Get(url)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+
 }
 
 func getResponseBody(url string) []byte {
-	resp, err := http.Get(url)
+	client := Client{}
+	resp, err := client.Get("https://api.github.com/emojis")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -87,4 +101,15 @@ func getResponseBody(url string) []byte {
 		log.Printf("Could not read response body. %v", err)
 	}
 	return body
+}
+
+func getEmoji() {
+	emoji := Emojis{}
+	url := "https://api.github.com/emojis"
+	responseBody := getResponseBody(url)
+
+	if err := json.Unmarshal(responseBody, &emoji); err != nil {
+		fmt.Printf("Could not unmarshal responseBody. %v", err)
+	}
+	fmt.Println(string(emoji.Wave))
 }
