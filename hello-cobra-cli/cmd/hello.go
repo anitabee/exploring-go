@@ -42,7 +42,8 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		getEmoji()
+		service := &HttpService{}
+		getEmoji(service)
 	},
 }
 
@@ -68,11 +69,11 @@ type Methods interface {
 	Get(url string) (resp *http.Response, err error)
 }
 
-type Client struct {
+type HttpService struct {
 	HTTPClient Methods
 }
 
-func (c *Client) Get(url string) (resp *http.Response, err error) {
+func (c *HttpService) Get(url string) (resp *http.Response, err error) {
 
 	httpClient := c.HTTPClient
 	if httpClient == nil {
@@ -88,9 +89,8 @@ func (c *Client) Get(url string) (resp *http.Response, err error) {
 
 }
 
-func getResponseBody(url string) []byte {
-	client := Client{}
-	resp, err := client.Get("https://api.github.com/emojis")
+func getResponseBody(service *HttpService, url string) []byte {
+	resp, err := service.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -103,10 +103,10 @@ func getResponseBody(url string) []byte {
 	return body
 }
 
-func getEmoji() {
+func getEmoji(service *HttpService) {
 	emoji := Emojis{}
-	url := "https://api.github.com/emojis"
-	responseBody := getResponseBody(url)
+
+	responseBody := getResponseBody(service, "https://api.github.com/emojis")
 
 	if err := json.Unmarshal(responseBody, &emoji); err != nil {
 		fmt.Printf("Could not unmarshal responseBody. %v", err)
