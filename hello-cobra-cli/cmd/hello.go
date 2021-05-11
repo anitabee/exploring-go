@@ -42,7 +42,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		service := &HttpService{}
+		service := &HelloClient{}
 		getEmoji(service)
 	},
 }
@@ -65,17 +65,17 @@ type Emojis struct {
 	Wave string `json:"wave"`
 }
 
-type Methods interface {
+type Trigger interface {
 	Get(url string) (resp *http.Response, err error)
 }
 
-type HttpService struct {
-	HTTPClient Methods
+type HelloClient struct {
+	HTTPClient Trigger
 }
 
-func (c *HttpService) Get(url string) (resp *http.Response, err error) {
+func (client *HelloClient) Get(url string) (resp *http.Response, err error) {
 
-	httpClient := c.HTTPClient
+	httpClient := client.HTTPClient
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
@@ -89,8 +89,8 @@ func (c *HttpService) Get(url string) (resp *http.Response, err error) {
 
 }
 
-func getResponseBody(service *HttpService, url string) []byte {
-	resp, err := service.Get(url)
+func getResponseBody(client *HelloClient, url string) []byte {
+	resp, err := client.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -103,10 +103,10 @@ func getResponseBody(service *HttpService, url string) []byte {
 	return body
 }
 
-func getEmoji(service *HttpService) {
+func getEmoji(client *HelloClient) {
 	emoji := Emojis{}
 
-	responseBody := getResponseBody(service, "https://api.github.com/emojis")
+	responseBody := getResponseBody(client, "https://api.github.com/emojis")
 
 	if err := json.Unmarshal(responseBody, &emoji); err != nil {
 		fmt.Printf("Could not unmarshal responseBody. %v", err)

@@ -34,7 +34,7 @@ func TestGetResponseBody(t *testing.T) {
 		},
 	}
 
-	service := &HttpService{
+	service := &HelloClient{
 		HTTPClient: mock,
 	}
 
