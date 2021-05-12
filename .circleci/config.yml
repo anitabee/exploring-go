@@ -4,8 +4,6 @@ version: 2.1
 jobs:
   build:
     working_directory: ~/go/src/github.com/anitabee/exploring-go
-    environment:
-      GOPATH: /go
     docker:
       - image: circleci/golang:1.16
     steps:
