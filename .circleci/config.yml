@@ -14,6 +14,7 @@ jobs:
       - run: ls -la
       - run: go env
       - run: cd hello-cobra-cli
+      - run: ls -la
       - run:
           name: Run tests
           environment:
