@@ -10,14 +10,11 @@ jobs:
       - image: circleci/golang:1.16
     steps:
       - checkout
-      - run: go env
-      - run: cd hello-cobra-cli; pwd; ls -la
-      - run: pwd; ls -la
       - run:
           name: Run tests
           environment:
             GO111MODULE: "on"
-          command: go test -v ./...
+          command: cd hello-cobra-cli; go test -v ./...
 
        
         
