@@ -3,7 +3,7 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: ~/go/src/github.com/anitabee/exploring-go/hello-cobra-cli
+    working_directory: hello-cobra-cli
     environment:
       GOPATH: /go
     docker:
