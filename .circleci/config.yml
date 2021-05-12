@@ -3,15 +3,21 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: ~/go/src/github.com/anitabee/exploring-go//hello-cobra-cli
+    working_directory: ~/go/src/github.com/anitabee/exploring-go/hello-cobra-cli
     environment:
       GOPATH: /go
     docker:
       - image: circleci/golang:1.16
     steps:
       - checkout
+      - run: pwd
+      - run: ls -la
+      - run: go env
       - run:
           name: Run tests
           environment:
             GO111MODULE: "on"
           command: go test -v ./...
+
+       
+        
