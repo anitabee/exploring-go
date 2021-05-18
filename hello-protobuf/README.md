@@ -6,7 +6,7 @@ Protocol buffers, are essentially a data format, much like JSON or XML in the se
 
 ### Install `protoc` protobuf compiler and `protoc-gen-go` plugin
 
-* Protobuf compiler is a standalone binary named protoc</br>
+* Protobuf compiler is a standalone binary named `protoc`</br>
 * `protoc-gen-go` is requried by `protoc` compiler to generate Go code</br>
 
 ` $ go get -v -u github.com/golang/protobuf/{proto,protoc-gen-go} `
